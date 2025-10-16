@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Card.php';
+
 
 class Game 
 {
@@ -414,27 +414,5 @@ class Game
         return $game;
     }
     
-    public function __toString(): string 
-    {
-        $status = $this->isCompleted ? 'TERMINÉE' : 'EN COURS';
-        return sprintf(
-            "Partie %s (%s) - %d/%d paires trouvées - %d coups - %s",
-            $status,
-            ucfirst($this->difficulty),
-            $this->foundPairs,
-            $this->totalPairs,
-            $this->moves,
-            $this->formatTime($this->getElapsedTime())
-        );
-    }
     
-    public function debug(): array 
-    {
-        return [
-            'game_state' => $this->getGameState(),
-            'cards_debug' => array_map(fn($card) => $card->debug(), $this->cards),
-            'memory_usage' => memory_get_usage(true),
-            'peak_memory' => memory_get_peak_usage(true)
-        ];
-    }
 }

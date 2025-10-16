@@ -1,4 +1,8 @@
 <?php
+require_once 'database.php';
+require_once 'Card.php';
+require_once 'Game.php';
+
 
 class GameController {
     private ?Game $game;
@@ -28,9 +32,6 @@ class GameController {
             case 'restart':
                 $this->restartGame();
                 break;
-            case 'hide_cards':         
-            $this->hideCards();     
-            break;   
                 
             case 'game':
                 $this->showGame();

@@ -226,31 +226,5 @@ class Card {
     }
 
 
-    // gestion de debug
 
-    // Testualisation 
-
-     public function __toString(): string 
-    {
-        $status = $this->isMatched ? 'TROUVÉE' : 
-                 ($this->isFlipped ? 'VISIBLE' : 'CACHÉE');
-                 
-        return "Carte #{$this->id} ({$this->image}) - {$status}";
-    }
-    
-
-    
-    public function debug(): array 
-    {
-        return [
-            'id' => $this->id,
-            'image' => $this->image,
-            'image_path' => $this->getImagePath(),
-            'is_flipped' => $this->isFlipped,
-            'is_matched' => $this->isMatched,
-            'can_be_flipped' => $this->canBeFlipped(),
-            'css_classes' => $this->getCssClasses(),
-            'display_image' => $this->getDisplayImage()
-        ];
-    }
 }
