@@ -267,9 +267,7 @@ class GameController {
         }
     }
     
-    /**
-     * Affiche classement selon VOTRE vue top_10_players
-     */
+   
     public function showLeaderboard(): void 
     {
         try {
@@ -296,9 +294,7 @@ class GameController {
         }
     }
     
-    /**
-     * Récupère message flash
-     */
+    
     public function getFlashMessage(): ?array 
     {
         if (isset($_SESSION['message'])) {
@@ -309,27 +305,28 @@ class GameController {
         return null;
     }
     
-    /**
-     * Rendu de vue
-     */
-    private function render(string $view, array $data = []): void 
-    {
-        extract($data);
-        $flash_message = $this->getFlashMessage();
-        
-        $viewFile = "views/{$view}.php";
-        if (file_exists($viewFile)) {
-            include $viewFile;
-        } else {
-            echo "Erreur : Vue '{$view}' introuvable.";
-        }
-    }
+    private function prepareViewData(array $data = []): array {
+    $defaultData = [
+        'flash_message' => $this->getFlashMessage(),
+        'page_title' => 'Memory Game'
+    ];
     
-    /**
-     * Redirection
-     */
-    private function redirect(string $url): void 
-    {
+    return array_merge($defaultData, $data);
+}
+
+   private function render(string $view, array $data = []): void {
+    $viewData = $this->prepareViewData($data);
+    extract($viewData);
+    
+    $viewFile = "views/{$view}.php";
+    if (file_exists($viewFile)) {
+        include $viewFile;
+    } else {
+        throw new RuntimeException("Vue '{$view}' introuvable.");
+    }
+}
+
+    private function redirect(string $url): void {
         header("Location: {$url}");
         exit;
     }
