@@ -273,7 +273,6 @@ class GameController {
         try {
             $pdo = Database::getInstance();
             
-            // Utilisation de VOTRE vue
             $sql = "SELECT * FROM top_10_players";
             $stmt = $pdo->query($sql);
             $leaderboard = $stmt->fetchAll();
@@ -305,24 +304,31 @@ class GameController {
         return null;
     }
     
-    private function prepareViewData(array $data = []): array {
-    $defaultData = [
-        'flash_message' => $this->getFlashMessage(),
-        'page_title' => 'Memory Game'
-    ];
-    
-    return array_merge($defaultData, $data);
-}
-
    private function render(string $view, array $data = []): void {
-    $viewData = $this->prepareViewData($data);
-    extract($viewData);
+    
+    $flash_message = $this->getFlashMessage();
+    $page_title = $data['page_title'] ?? 'Memory Game';
+    
+    $game = $data['game'] ?? null;
+    $cards = $data['cards'] ?? [];
+    $game_state = $data['game_state'] ?? [];
+    $is_completed = $data['is_completed'] ?? false;
+    $final_stats = $data['final_stats'] ?? [];
+    $leaderboard = $data['leaderboard'] ?? [];
+    
+    
+    extract($data);
+    
+    
+    if (!isset($flash_message)) {
+        $flash_message = null;
+    }
     
     $viewFile = "views/{$view}.php";
     if (file_exists($viewFile)) {
         include $viewFile;
     } else {
-        throw new RuntimeException("Vue '{$view}' introuvable.");
+        throw new RuntimeException("Vue '{$view}' introuvable : {$viewFile}");
     }
 }
 

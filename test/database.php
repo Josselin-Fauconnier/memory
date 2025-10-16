@@ -22,8 +22,7 @@ class Database {
 
 
 
-   public static function getInstance(): PDO 
-    {
+   public static function getInstance(): PDO {
         if (self::$instance === null) {
             try {
                 $dsn = sprintf(

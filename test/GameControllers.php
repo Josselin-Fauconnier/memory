@@ -1,8 +1,4 @@
 <?php
-require_once 'database.php';
-require_once 'Card.php';
-require_once 'Game.php';
-
 
 class GameController {
     private ?Game $game;
@@ -32,6 +28,9 @@ class GameController {
             case 'restart':
                 $this->restartGame();
                 break;
+            case 'hide_cards':         
+            $this->hideCards();     
+            break;   
                 
             case 'game':
                 $this->showGame();
@@ -268,9 +267,7 @@ class GameController {
         }
     }
     
-    /**
-     * Affiche classement selon VOTRE vue top_10_players
-     */
+   
     public function showLeaderboard(): void 
     {
         try {
@@ -297,9 +294,7 @@ class GameController {
         }
     }
     
-    /**
-     * Récupère message flash
-     */
+    
     public function getFlashMessage(): ?array 
     {
         if (isset($_SESSION['message'])) {
@@ -310,27 +305,37 @@ class GameController {
         return null;
     }
     
-    /**
-     * Rendu de vue
-     */
-    private function render(string $view, array $data = []): void 
-    {
-        extract($data);
-        $flash_message = $this->getFlashMessage();
-        
-        $viewFile = "views/{$view}.php";
-        if (file_exists($viewFile)) {
-            include $viewFile;
-        } else {
-            echo "Erreur : Vue '{$view}' introuvable.";
-        }
+   private function render(string $view, array $data = []): void 
+{
+    // Initialisation défensive de TOUTES les variables nécessaires
+    $flash_message = $this->getFlashMessage();
+    $page_title = $data['page_title'] ?? 'Memory Game';
+    
+    // Variables spécifiques au jeu (si nécessaires)
+    $game = $data['game'] ?? null;
+    $cards = $data['cards'] ?? [];
+    $game_state = $data['game_state'] ?? [];
+    $is_completed = $data['is_completed'] ?? false;
+    $final_stats = $data['final_stats'] ?? [];
+    $leaderboard = $data['leaderboard'] ?? [];
+    
+    // Extraction de toutes les autres données
+    extract($data);
+    
+    // S'assurer que flash_message est bien défini (même si null)
+    if (!isset($flash_message)) {
+        $flash_message = null;
     }
     
-    /**
-     * Redirection
-     */
-    private function redirect(string $url): void 
-    {
+    $viewFile = "views/{$view}.php";
+    if (file_exists($viewFile)) {
+        include $viewFile;
+    } else {
+        throw new RuntimeException("Vue '{$view}' introuvable : {$viewFile}");
+    }
+}
+
+    private function redirect(string $url): void {
         header("Location: {$url}");
         exit;
     }
