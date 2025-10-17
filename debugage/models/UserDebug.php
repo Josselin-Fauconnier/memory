@@ -45,8 +45,6 @@ class UserDebugger
         return [
             'id' => $user->getId(),
             'username' => $user->getUsername(),
-            'is_new' => $user->getId() === null,
-            'is_persisted' => $user->getId() !== null,
             'username_length' => strlen($user->getUsername()),
             'created_at' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
             'password_hash_algo' => self::detectPasswordAlgo($user->getPasswordHash())
@@ -286,11 +284,7 @@ class UserDebugger
             echo "✅ Mot de passe correct: " . ($validPassword ? 'OUI' : 'NON') . "<br>\n";
             echo "❌ Mauvais mot de passe: " . ($invalidPassword ? 'OUI' : 'NON') . "<br>\n";
 
-            // Phase 5: Sérialisation
-            echo "<h4>Phase 5: Sérialisation</h4>\n";
-            $userArray = $user->toArray();
-            echo "✅ Sérialisé: " . json_encode($userArray, JSON_PRETTY_PRINT) . "<br>\n";
-
+            
         } catch (Exception $e) {
             echo "❌ Erreur: " . $e->getMessage() . "<br>\n";
         }
