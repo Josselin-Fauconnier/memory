@@ -17,7 +17,6 @@ define('APP_VERSION', '1.0.0');
 define('ASSETS_PATH', ROOT_PATH . '/assets');
 define('IMAGES_PATH', ASSETS_PATH . '/images');
 define('CSS_PATH', ASSETS_PATH . '/css');
-define('LOGS_PATH', ROOT_PATH . '/logs');
 
 // === CONFIGURATION JEU - BASÉE SUR Game.php ===
 
@@ -180,31 +179,7 @@ function formatGameTime(int $seconds): string
     }
 }
 
-/**
- * Validation environnement minimal
- */
-function validateBasicEnvironment(): array 
-{
-    $errors = [];
-    
-    // Vérification dossiers essentiels
-    $dirs = [IMAGES_PATH, LOGS_PATH];
-    foreach ($dirs as $dir) {
-        if (!is_dir($dir)) {
-            $errors[] = "Dossier manquant: $dir";
-        }
-    }
-    
-    // Vérification extensions critiques
-    $extensions = ['pdo', 'pdo_mysql'];
-    foreach ($extensions as $ext) {
-        if (!extension_loaded($ext)) {
-            $errors[] = "Extension manquante: $ext";
-        }
-    }
-    
-    return $errors;
-}
+
 
 // === CONSTANTES CALCULÉES ===
 define('DEFAULT_DIFFICULTY', array_keys(GAME_DIFFICULTIES)[0]); // 'facile'
