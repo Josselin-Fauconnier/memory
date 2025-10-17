@@ -33,7 +33,6 @@ $navigation_links = [
             </a>
         </div>
 
-        <!-- Menu principal -->
         <ul class="nav-menu" role="menubar">
             <?php 
             $links = $is_logged_in ? $navigation_links['authenticated'] : $navigation_links['public'];
@@ -61,7 +60,7 @@ $navigation_links = [
                    class="nav-link logout-link"
                    onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?');"
                    aria-label="Se déconnecter">
-                    🚪 Déconnexion
+                     Déconnexion
                 </a>
             <?php else: ?>
                 <a href="?action=login" 
